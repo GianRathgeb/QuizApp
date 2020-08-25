@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './question.dart';
+import './answer.dart';
 
 void main() => runApp(MyApp());
 
@@ -21,13 +22,23 @@ class _MyAppState extends State<MyApp> {
     print(_questionIndex);
   }
 
-  var questions = [
-    'Was ist deine Lieblingsfarbe?',
-    'Was ist dein Lieblingstier?'
-  ];
-
   @override
   Widget build(BuildContext context) {
+    const questions = [
+      {
+        'questionText': 'Was ist deine Lieblingsfarbe?',
+        'answers': ['Schwarz', 'Rot', 'Blau', 'Magenta']
+      },
+      {
+        'questionText': 'Was ist dein Lieblingstier?',
+        'answers': ['Hund', 'Katze', 'Tiger', 'Elefant']
+      },
+      {
+        'questionText': 'Was ist dein Lieblinsessen',
+        'answers': ['Pizza', 'Pasta', 'Pommes und Schnitzel', 'Fleisch']
+      },
+    ];
+
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -36,20 +47,12 @@ class _MyAppState extends State<MyApp> {
         body: Column(
           children: <Widget>[
             Question(
-              questions[_questionIndex],
+              questions[_questionIndex]['questionText'],
             ),
-            RaisedButton(child: Text('Antwort 1'), onPressed: _answerQuestion),
-            RaisedButton(
-              child: Text('Antwort 2'),
-              onPressed: () => print('Antwort 2 wurde gewaehlt'),
-            ),
-            RaisedButton(
-              child: Text('Antwort 3'),
-              onPressed: () {
-                // .....
-                print('Antwort 3 wurde gewaehlt');
-              },
-            ),
+            ...(questions[_questionIndex]['answers'] as List<String>)
+                .map((answer) {
+              return Answer(_answerQuestion, answer);
+            }).toList()
           ],
         ),
       ),
