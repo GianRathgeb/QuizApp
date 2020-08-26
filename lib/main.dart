@@ -13,24 +13,48 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  var _questionIndex = 0;
-
   final _questions = const [
     {
-      'questionText': 'Was ist deine Lieblingsfarbe?',
-      'answers': ['Schwarz', 'Rot', 'Blau', 'Magenta']
+      'questionText': 'What is your favourite color',
+      'answers': [
+        {'text': 'Black', 'score': 10},
+        {'text': 'Red', 'score': 5},
+        {'text': 'Blue', 'score': 3},
+        {'text': 'Magenta', 'score': 1}
+      ]
     },
     {
-      'questionText': 'Was ist dein Lieblingstier?',
-      'answers': ['Hund', 'Katze', 'Tiger', 'Elefant']
+      'questionText': 'What is your favourite animal?',
+      'answers': [
+        {'text': 'Dog', 'score': 10},
+        {'text': 'Cat', 'score': 5},
+        {'text': 'Tiger', 'score': 3},
+        {'text': 'Elephant', 'score': 1}
+      ]
     },
     {
-      'questionText': 'Was ist dein Lieblinsessen',
-      'answers': ['Pizza', 'Pasta', 'Pommes und Schnitzel', 'Fleisch']
+      'questionText': 'What is your favourite meal?',
+      'answers': [
+        {'text': 'Pizza', 'score': 10},
+        {'text': 'Pasta', 'score': 5},
+        {'text': 'Pommes and chicken nuggets', 'score': 3},
+        {'text': 'Meat', 'score': 1}
+      ]
     },
   ];
+  var _questionIndex = 0;
+  var _totalScore = 0;
 
-  void _answerQuestion() {
+  void _resetQuiz() {
+    setState(() {
+      _questionIndex = 0;
+      _totalScore = 0;
+    });
+  }
+
+  void _answerQuestion(int score) {
+    _totalScore += score;
+
     setState(() {
       _questionIndex = _questionIndex + 1;
     });
@@ -41,7 +65,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text("Meine erste App"),
+          title: Text("My first quiz app"),
         ),
         body: _questionIndex < _questions.length
             ? Quiz(
@@ -49,7 +73,7 @@ class _MyAppState extends State<MyApp> {
                 questionIndex: _questionIndex,
                 questions: _questions,
               )
-            : Result(),
+            : Result(_totalScore, _resetQuiz),
       ),
     );
   }
